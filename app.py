@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#---------- Database configuration -----------//
+# ---------- Database configuration -----------
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
