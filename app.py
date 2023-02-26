@@ -1,14 +1,15 @@
 from flask import Flask, redirect, request, jsonify
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from models import Contests
 
 app = Flask(__name__)
 
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# # ---------- Database configuration -----------
-# db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
+# ---------- Database configuration -----------
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # ------- Create Contest -------
 @app.route('/api/contest/create', methods=['POST'])
@@ -122,6 +123,23 @@ def createContest():
             'status':False,
             'message':'v_point is not an integer'
         }), 400
+
+    con = Contests(
+        name=data['name'],
+        description=data['description'],
+        language = data['language'],
+        created_by = 'abc',
+        start_date = data['start_date'],
+        end_date = data['end_date'],
+        c_status = True,
+        p_point = data['p_point'],
+        v_point = data['v_point']
+    )
+
+    db.session.add(con)
+    db.session.commit()
+
+
 
     return jsonify({
         "status" : True,
